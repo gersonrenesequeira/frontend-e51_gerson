@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import TablaVentas from '../components/ventas/TablaVentas';
-import CuadroBusquedas from '../components/busquedas/CuadroBusquedas,';
+import CuadroBusquedas from '../components/busquedas/CuadroBusquedas';
 const Ventas = () => {
 
     const [ventas, setVentas] = useState([]);

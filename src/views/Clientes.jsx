@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import TablaClientes from "../components/clientes/TablaClientes";
-import CuadroBusquedas from "../components/busquedas/CuadroBusquedas,";
+import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
 
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
