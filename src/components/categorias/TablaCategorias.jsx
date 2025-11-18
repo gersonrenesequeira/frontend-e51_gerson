@@ -1,8 +1,18 @@
 import { useState } from "react";
 import { Table, Spinner, Button } from "react-bootstrap";
 import BotonOrden from "../ordenamiento/BotonOrden";
+import Paginacion from "../ordenamienta/Paginacion"; // 🔹 Agregado
 
-const TablaCategorias = ({ categorias, cargando, abrirModalEdicion, abrirModalEliminacion }) => {
+const TablaCategorias = ({
+    categorias,
+    cargando,
+    abrirModalEdicion,
+    abrirModalEliminacion,
+    totalElementos,              // 🔹 Agregado
+    elementosPorPagina,          // 🔹 Agregado
+    paginaActual,                // 🔹 Agregado
+    establecerPaginaActual       // 🔹 Agregado
+}) => {
 
     const [orden, setOrden] = useState({ campo: "id_categoria", direccion: "asc" });
 
@@ -26,13 +36,11 @@ const TablaCategorias = ({ categorias, cargando, abrirModalEdicion, abrirModalEl
         return orden.direccion === "asc" ? comparacion : -comparacion;
     });
 
-
-
     if (cargando) {
         return (
             <>
                 <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Cargando. . .</span>
+                    <span className="visually-hidden">Cargando...</span>
                 </Spinner>
             </>
         );
@@ -46,28 +54,25 @@ const TablaCategorias = ({ categorias, cargando, abrirModalEdicion, abrirModalEl
                         <BotonOrden campo="id_categoria" orden={orden} manejarOrden={manejarOrden}>
                             ID
                         </BotonOrden>
-
                         <BotonOrden campo="nombre_categoria" orden={orden} manejarOrden={manejarOrden}>
                             Nombre Categoría
                         </BotonOrden>
-
                         <BotonOrden campo="descripcion_categoria" orden={orden} manejarOrden={manejarOrden}>
                             Descripción Categoría
                         </BotonOrden>
-
                         <BotonOrden campo="Accion" orden={orden} manejarOrden={manejarOrden}>
-                            Accion
+                            Acción
                         </BotonOrden>
                     </tr>
                 </thead>
                 <tbody>
-                    {categoriasOrdenadas.map((categoria) => {
-                        return (
-                            <tr key={categoria.id_categoria}>
-                                <td>{categoria.id_categoria}</td>
-                                <td>{categoria.nombre_categoria}</td>
-                                <td>{categoria.descripcion_categoria}</td>
-                                <td><Button
+                    {categoriasOrdenadas.map((categoria) => (
+                        <tr key={categoria.id_categoria}>
+                            <td>{categoria.id_categoria}</td>
+                            <td>{categoria.nombre_categoria}</td>
+                            <td>{categoria.descripcion_categoria}</td>
+                            <td>
+                                <Button
                                     variant="outline-warning"
                                     size="sm"
                                     className="me-2"
@@ -75,21 +80,28 @@ const TablaCategorias = ({ categorias, cargando, abrirModalEdicion, abrirModalEl
                                 >
                                     <i className="bi bi-pencil"></i>
                                 </Button>
-                                    <Button
-                                        variant="outline-danger"
-                                        size="sm"
-                                        onClick={() => abrirModalEliminacion(categoria)}
-                                    >
-                                        <i className="bi bi-trash"></i>
-                                    </Button>
-                                </td>
-                            </tr>
-                        );
-                    })}
+                                <Button
+                                    variant="outline-danger"
+                                    size="sm"
+                                    onClick={() => abrirModalEliminacion(categoria)}
+                                >
+                                    <i className="bi bi-trash"></i>
+                                </Button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </Table>
+
+            {/* 🔹 Agregado: Paginación */}
+            <Paginacion
+                elementosPorPagina={elementosPorPagina}
+                totalElementos={totalElementos}
+                paginaActual={paginaActual}
+                establecerPaginaActual={establecerPaginaActual}
+            />
         </>
     );
-}
+};
 
 export default TablaCategorias;

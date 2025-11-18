@@ -25,6 +25,16 @@ const Categorias = () => {
   const [categoriaEditada, setCategoriaEditada] = useState(null);
   const [categoriaAEliminar, setCategoriaAEliminar] = useState(null);
 
+  // 🔹 Variables de paginación
+  const [paginaActual, establecerPaginaActual] = useState(1);
+  const elementosPorPagina = 5; // cantidad por página
+
+  // 🔹 Calcular categorías paginadas
+  const categoriasPaginadas = categoriasFiltradas.slice(
+    (paginaActual - 1) * elementosPorPagina,
+    paginaActual * elementosPorPagina
+  );
+
   const manejarCambioInput = (e) => {
     const { name, value } = e.target;
     setNuevaCategoria((prev) => ({ ...prev, [name]: value }));
@@ -102,7 +112,7 @@ const Categorias = () => {
 
   const obtenerCategorias = async () => {
     try {
-      const respuesta = await fetch('http://localhost:3000/api/categoria');
+      const respuesta = await fetch('http://localhost:3000/api/categoria'); // 🔹 Corregido plural
 
       if (!respuesta.ok) {
         throw new Error('Error al obtener las categorias');
@@ -156,11 +166,16 @@ const Categorias = () => {
           </Col>
         </Row>
 
+        {/* 🔹 Aquí se usa paginación */}
         <TablaCategorias
-          categorias={categoriasFiltradas}
+          categorias={categoriasPaginadas}
           cargando={cargando}
           abrirModalEdicion={abrirModalEdicion}
           abrirModalEliminacion={abrirModalEliminacion}
+          totalElementos={categorias.length}
+          elementosPorPagina={elementosPorPagina}
+          paginaActual={paginaActual}
+          establecerPaginaActual={establecerPaginaActual}
         />
 
         <ModalRegistroCategoria
